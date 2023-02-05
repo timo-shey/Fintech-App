@@ -5,6 +5,7 @@ import com.example.FintechApplication.dto.response.PageResponse;
 import com.example.FintechApplication.dto.response.TransactionsForCustomerResponse;
 import com.example.FintechApplication.dto.response.TransactionsFullResponse;
 import com.example.FintechApplication.exceptions.BankAccountNotFoundException;
+import com.example.FintechApplication.exceptions.CustomerNotFoundException;
 import com.example.FintechApplication.model.AccountEntity;
 import com.example.FintechApplication.model.CustomerEntity;
 import com.example.FintechApplication.model.TransactionsEntity;
@@ -14,12 +15,12 @@ import com.example.FintechApplication.repositories.TransactionRepository;
 import com.example.FintechApplication.service.AccountService;
 import com.example.FintechApplication.service.TransactionService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
 
-    private static Map<String, Comparator<TransactionsForCustomerResponse>> sortby = new HashMap<>();
+    private static final Map<String, Comparator<TransactionsForCustomerResponse>> sortby = new HashMap<>();
 
     @Override
     public TransactionsFullResponse processNewTransaction(TransactionRequest request) throws BankAccountNotFoundException {
@@ -41,17 +42,67 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionsEntity saveNewTransaction(TransactionRequest request) throws BankAccountNotFoundException {
-        return null;
+        Optional<AccountEntity> sourceAccount = accountRepository.findById(request.getSourceAccountId());
+        Optional<AccountEntity> destinationAccount = accountRepository.findById(request.getDestinationAccountId());
+
+        if(sourceAccount.isPresent() && destinationAccount.isPresent()){
+            TransactionsEntity newTransaction = new TransactionsEntity(
+                    UUID.randomUUID().toString(),
+                    sourceAccount.get().getId(),
+                    destinationAccount.get().getId(),
+                    request.getAmountInNaira(),
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    request.getMessage(),
+                    sourceAccount.get(),
+                    destinationAccount.get()
+            );
+            transactionRepository.save(newTransaction);
+            return newTransaction;
+
+        } else {
+            throw new BankAccountNotFoundException();
+        }
     }
 
     @Override
     public List<TransactionsFullResponse> getAllTransactionsBy(String date) {
-        return null;
+        LocalDate localdate = LocalDate.parse(date);
+        List<TransactionsEntity> transactions = transactionRepository.findAllByDate(localdate);
+        return transactions.stream()
+                .map(TransactionsFullResponse::new).
+                collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionsForCustomerResponse> getAllTransactionsForCustomer(String customerId) throws Exception {
-        return null;
+        Optional<CustomerEntity> customer = customerRepository.findById(customerId);
+        if(customer.isEmpty())
+            throw new CustomerNotFoundException("Customer with id: " + customerId + "not found", HttpStatus.BAD_REQUEST);
+
+        Optional<List<AccountEntity>> accounts = accountRepository.findAllByCustomerId(customerId);
+        if(accounts.isEmpty())
+            throw new BankAccountNotFoundException();
+
+        List<String> transactions = accounts.get().stream()
+                .flatMap(account -> account.getTransactionIds().stream())
+                .collect(Collectors.toList());
+
+        return createTransactionsList(transactions);
+    }
+
+    private List<TransactionsForCustomerResponse> createTransactionsList(List<String> transactionIds){
+        List<TransactionsEntity> transactions = transactionRepository.findAllById(transactionIds);
+        List<TransactionsForCustomerResponse> result = new ArrayList<>();
+        for(TransactionsEntity transaction : transactions){
+            result.add(new TransactionsForCustomerResponse(
+                            transaction,
+                            getCustomer(transaction.getSourceAccountId()),
+                            getCustomer(transaction.getDestinationAccountId())
+                    )
+            );
+        }
+        return result;
     }
 
     private CustomerEntity getCustomer(String sourceAccountId) {
