@@ -91,6 +91,12 @@ public class TransactionServiceImpl implements TransactionService {
         return createTransactionsList(transactions);
     }
 
+    @Override
+    public PageResponse<TransactionsForCustomerResponse> getPagedTransactions(String customerId, Integer pageNo, Integer pageSize, String sortBy) throws Exception {
+        List<TransactionsForCustomerResponse> allTransactions =  getAllTransactionsForCustomer(customerId);
+        return getPage(pageNo, pageSize, allTransactions, sortBy);
+    }
+
     private List<TransactionsForCustomerResponse> createTransactionsList(List<String> transactionIds){
         List<TransactionsEntity> transactions = transactionRepository.findAllById(transactionIds);
         List<TransactionsForCustomerResponse> result = new ArrayList<>();

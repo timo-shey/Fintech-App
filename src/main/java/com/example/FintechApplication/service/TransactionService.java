@@ -16,4 +16,5 @@ public interface TransactionService {
     TransactionsEntity saveNewTransaction(TransactionRequest request) throws BankAccountNotFoundException;
     List<TransactionsFullResponse> getAllTransactionsBy(String date);
     List<TransactionsForCustomerResponse> getAllTransactionsForCustomer(String customerId) throws Exception;
+    PageResponse<TransactionsForCustomerResponse> getPagedTransactions(String customerId, Integer pageNo, Integer pageSize, String sortBy) throws Exception;
 }
