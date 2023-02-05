@@ -1,7 +1,6 @@
 package com.example.FintechApplication.utilities;
 
 import com.example.FintechApplication.service.UserService;
-import com.example.FintechApplication.service.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,16 +16,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
 	private MyAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	private UserServiceImpl userService;
+	private UserService userService;
 	private JWTRequestFilter jwtRequestFilter;
 
 	@Autowired

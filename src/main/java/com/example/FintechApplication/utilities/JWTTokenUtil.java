@@ -14,7 +14,6 @@ import java.util.function.Function;
 
 @Component
 public class JWTTokenUtil{
-
 	public static final long JWT_TOKEN_VALIDITY_DURATION = 5 * 60 * 60;
 
 	@Value("${jwt.secret}")

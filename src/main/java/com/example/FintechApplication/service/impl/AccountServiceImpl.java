@@ -92,8 +92,7 @@ public class AccountServiceImpl implements AccountService {
         return sumOfBalanceInNaira;
     }
     public static <T> List<T> appendTransaction(List<T> oldTransactionIds, T newTransactionId) {
-        List<T> newTransactionIds = new ArrayList<>();
-        newTransactionIds.addAll(oldTransactionIds);
+        List<T> newTransactionIds = new ArrayList<>(oldTransactionIds);
         newTransactionIds.add(newTransactionId);
         return newTransactionIds;
     }
