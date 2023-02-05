@@ -16,24 +16,20 @@ public class CreditController {
     private final CreditService creditService;
 
     @PostMapping("/credits/{id}")
-    public CreditResponse createCreditForCustomer(
-            @PathVariable(name ="id") String customerId,
-            @RequestBody CreditRequest newCreditRequest
+    public CreditResponse createCreditForCustomer(@PathVariable(name ="id") String customerId,
+                                                  @RequestBody CreditRequest newCreditRequest
     )throws CustomerNotFoundException {
         return creditService.createCreditForCustomer(customerId, newCreditRequest);
     }
 
     @GetMapping("/credits/{id}")
-    public List<CreditResponse> getAllCredits(
-            @PathVariable (name="id") String customerId
-    ){
+    public List<CreditResponse> getAllCredits(@PathVariable (name="id") String customerId){
         return creditService.getAllCreditsById(customerId);
     }
 
     @PutMapping("/credits/{id}")
-    public CreditResponse payoffCredit(
-            @PathVariable String id,
-            @RequestBody CreditUpdateRequest creditUpdateRequest
+    public CreditResponse payoffCredit(@PathVariable String id,
+                                       @RequestBody CreditUpdateRequest creditUpdateRequest
     ) throws Exception{
         return creditService.createUpdateCredit(id, creditUpdateRequest);
     }
