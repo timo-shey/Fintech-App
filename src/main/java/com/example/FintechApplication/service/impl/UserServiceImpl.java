@@ -1,13 +1,11 @@
 package com.example.FintechApplication.service.impl;
 
-import com.example.FintechApplication.dto.request.UserRequest;
 import com.example.FintechApplication.model.UserEntity;
 import com.example.FintechApplication.repositories.UserRepository;
 import com.example.FintechApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

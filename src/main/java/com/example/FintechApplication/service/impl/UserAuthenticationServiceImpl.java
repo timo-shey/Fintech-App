@@ -11,9 +11,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @AllArgsConstructor
+@Service
 public class UserAuthenticationServiceImpl implements UserAuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
