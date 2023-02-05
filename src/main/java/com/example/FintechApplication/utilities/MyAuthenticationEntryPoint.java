@@ -10,7 +10,6 @@ import java.io.IOException;
 
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint{
-
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
