@@ -9,7 +9,7 @@ public class BankAccountNotFoundException extends Exception {
   private final HttpStatus errorStatus;
 
   public BankAccountNotFoundException(){
-    this.errorMessage = "Bankaccount not found";
+    this.errorMessage = "Bank Account not found";
     this.errorStatus = HttpStatus.BAD_REQUEST;
   }
 

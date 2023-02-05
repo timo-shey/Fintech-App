@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CustomerServiceImpl implements CustomerService {
-
     private final CustomerRepository customerRepository;
     private final AddressRepository addressRepository;
     public static LocalDate convertToDate(String date) throws WrongDateFormatException{
@@ -63,27 +62,26 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return customers.stream()
-                .map(customerEntity -> new CustomerResponse(customerEntity))
+                .map(CustomerResponse::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<CustomerResponse> findAllCustomers() {
         List<CustomerEntity> customers = customerRepository.findAll();
-        List<CustomerResponse> customerResponse = customers.stream()
-                .map(customerEntity -> new CustomerResponse(customerEntity))
+        return customers.stream()
+                .map(CustomerResponse::new)
                 .collect(Collectors.toList());
-        return customerResponse;
     }
 
     @Override
     public Map<Integer, List<CustomerResponse>> findAllCustomersGroupedBy(String groupedBy) {
         List<CustomerEntity> customers = customerRepository.findAll();
         List<CustomerResponse> customersResponse = customers.stream()
-                .map(customerEntity -> new CustomerResponse(customerEntity))
+                .map(CustomerResponse::new)
                 .collect(Collectors.toList());
 
         return customersResponse.stream()
-                .collect(Collectors.groupingBy(customerResponse -> customerResponse.getRating()));
+                .collect(Collectors.groupingBy(CustomerResponse::getRating));
     }
 }

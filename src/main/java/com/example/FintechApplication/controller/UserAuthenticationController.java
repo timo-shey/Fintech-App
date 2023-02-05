@@ -1,7 +1,7 @@
 package com.example.FintechApplication.controller;
 
-import com.example.FintechApplication.dto.request.AuthentificationRequest;
-import com.example.FintechApplication.dto.response.AuthentificationResponse;
+import com.example.FintechApplication.dto.request.AuthenticationRequest;
+import com.example.FintechApplication.dto.response.AuthenticationResponse;
 import com.example.FintechApplication.service.UserAuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class UserAuthenticationController {
   private final UserAuthenticationService userAuthenticationService;
 
-  @PostMapping("/authentification")
-  public ResponseEntity<AuthentificationResponse> doAuthentification(
-    @RequestBody AuthentificationRequest request
+  @PostMapping("/authentication")
+  public ResponseEntity<AuthenticationResponse> doAuthentication(
+    @RequestBody AuthenticationRequest request
   ) throws Exception{
-    Optional<AuthentificationResponse> response = userAuthenticationService.authentificate(request);
+    Optional<AuthenticationResponse> response = userAuthenticationService.authenticate(request);
     return response.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 

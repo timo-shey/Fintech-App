@@ -1,7 +1,7 @@
 package com.example.FintechApplication.service.impl;
 
-import com.example.FintechApplication.dto.request.AuthentificationRequest;
-import com.example.FintechApplication.dto.response.AuthentificationResponse;
+import com.example.FintechApplication.dto.request.AuthenticationRequest;
+import com.example.FintechApplication.dto.response.AuthenticationResponse;
 import com.example.FintechApplication.service.UserAuthenticationService;
 import com.example.FintechApplication.service.UserService;
 import com.example.FintechApplication.utilities.JWTTokenUtil;
@@ -21,11 +21,11 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     private final UserService userService;
     private final JWTTokenUtil jwtTokenUtil;
     @Override
-    public Optional<AuthentificationResponse> authentificate(AuthentificationRequest request) throws Exception {
+    public Optional<AuthenticationResponse> authenticate(AuthenticationRequest request) throws Exception {
         authenticate(request.getUsername(), request.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return Optional.of(new AuthentificationResponse(token));
+        return Optional.of(new AuthenticationResponse(token));
     }
 
     private void authenticate(String username, String password) throws Exception {

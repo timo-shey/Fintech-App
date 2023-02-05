@@ -6,13 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 
 public class CreditExceededResponse {
-
   private Long originalCreditAmountInNaira;
   private Long currentCreditAmountInNaira;
   private String firstName;

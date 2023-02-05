@@ -3,7 +3,7 @@ package com.example.FintechApplication.utilities;
 import com.example.FintechApplication.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@AllArgsConstructor
 public class JWTRequestFilter extends OncePerRequestFilter{
-  @Autowired 
 	private UserService userService;
-  @Autowired 
 	private JWTTokenUtil jwtTokenUtil;
 
   @Override
