@@ -27,6 +27,5 @@ public class PageResponse<T> {
   private Double calTotalPages() {
     return Math.ceil(Double.valueOf(totalResults) / (Double.valueOf(resultsPerPage)));
   }
-  //TO-DO: Methode for calculatin the total number of pages
 
 }

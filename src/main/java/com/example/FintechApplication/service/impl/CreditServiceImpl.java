@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CreditServiceImpl implements CreditService {
-
     private final CustomerRepository customerRepository;
     private final CreditsRepository creditRepository;
     private final AccountRepository accountRepository;
